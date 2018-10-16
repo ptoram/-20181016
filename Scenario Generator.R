@@ -1,11 +1,11 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # SCENARIO GENERATOR
 #
-# Author: Pamela Torres Nuñez
+# Author: Pamela Torres NuÃ±ez
 #         MSM
 #
 # Date: Sep 18, 2018
-# Versión: 1.1
+# VersiÃ³n: 1.1
 #
 # DESCRIPTION: 
 # 
