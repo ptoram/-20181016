@@ -1,13 +1,13 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # BLOCKALIGNEDRANKS
 #
-# Author: Pamela Torres Nuñez
+# Author: Pamela Torres NuÃ±ez
 #         MSM
 #
 # Date: May 01, 2018
-# Versión: 1.0
+# VersiÃ³n: 1.0
 #
-# Reference: "alignedranks_20180601.R" & "scoring_20171103.R" by Víctor Tercero
+# Reference: "alignedranks_20180601.R" & "scoring_20171103.R" by VÃ­ctor Tercero
 #
 # DESCRIPTION: 
 # 
