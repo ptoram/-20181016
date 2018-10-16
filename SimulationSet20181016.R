@@ -1,11 +1,11 @@
 setwd("C:/Users/User/OneDrive/MSM/Tesis/Codigos R")
-source("GetDist_20180501.R")
-source("Scenario Generator 20180918.R")
-source("alignedranks_20180601.R")
-source("scoring_20171103.R")
-source("blockalignedranks 20180601.R")
-source("PowerTest20181009.R")
-source("Anompa20181009.R")
+source("GetDist.R")
+source("Scenario Generator.R")
+source("alignedranks.R")
+source("scoring.R")
+source("blockalignedranks.R")
+source("PowerTest.R")
+source("Anompa.R")
 
 
 r = 1 #amount of replicates in simulation
