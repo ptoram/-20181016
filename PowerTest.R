@@ -1,6 +1,4 @@
-
-
-Power.test<- function (score.type, alignement,absolute, n, tau, beta, std, mu, dist, r, method.test, alpha){
+Power.test<- function (score.type, alignement,absolute, n, tau, beta, std, mu, dist, r, method.test, alpha, par.location = 0, par.scale = 1, par.shape = 1){
   
   if (alpha < 0 | alpha > 1){
     print("Error: alpha value should be between 0 and 1")
