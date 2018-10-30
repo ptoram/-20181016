@@ -11,27 +11,19 @@ source("Anompa.R")
 r = 1 #amount of replicates in simulation
 n.set = c(2,5,10,20,50,100) #replicates in the design
 mu = 0
-tau.set = list(tau1 = c(0,0),
-           tau2 = c(-1,1),
-           tau3 = c(-2,2),
-           tau4 = c(-3,3),
-           tau5 = c(0,0,0,0),
-           tau6 = c(-1,-1,1,1),
-           tau7 = c(-2,-2,2,2),
-           tau8 = c(-3,-3,3,3))
-           
+tau.set = list(tau5 = c(0,0,0,0),
+               tau6 = c(-1,-1,1,1),
+               tau7 = c(-2,-2,2,2),
+               tau8 = c(-3,-3,3,3))
+
 beta = c(0,0,0,0)
 
-std.set = list( std1 = c(1,1),
-            std2 = c(1,2),
-            std3 = c(1,3),
-            std4 = c(1,4),
-            std5 = c(1,1,1,1),
-            std6 = c(1,1,2,2),
-            std7 = c(1,1,3,3),
-            std8 = c(1,1,4,4))
-            
-            
+std.set = list(std5 = c(1,1,1,1),
+               std6 = c(1,1,2,2),
+               std7 = c(1,1,3,3),
+               std8 = c(1,1,4,4))
+
+
 distr.set = c("Normal", "Normal2","DoubleExp","DoubleExp2","LogNormal","Gamma","Weibull")
 
 par.location = 0
@@ -40,13 +32,13 @@ par.scale = 1
 
 par.shape.set = c(0.5,1,3,10)
 
-score.type.set = c("Mood", "FAB", "NPL", "Klotz", "SR", "TG", "FK")
+score.type.set = c("Mood", "FAB", "Klotz", "SR", "TG", "FK")
 
 alignement.set = c("unadjusted", "overallmean", "overallmedian")
 
 absolute.set = c(TRUE, FALSE)
 
-method.test.set =  "chiSO"
+method.test.set =  c("chiSO", "FstaO","chiSN", "FstaN")[1]
 
 alpha = 0.05
 
@@ -60,6 +52,7 @@ DB.beta = NA
 DB.std = NA
 DB.mu = NA
 DB.dist = NA
+DB.par.shape = NA
 DB.r = NA
 DB.method.test = NA
 DB.alpha = NA
@@ -67,13 +60,24 @@ DB.power = NA
 
 ##################################################################################################
 ## Normal 
-dist = "Normal"
-par.shape.set = NULL
 i = 0
+for(dist in distr.set){
+  if(any(dist == c("Normal","Normal2", "DoubleExp","DoubleExp2","LogNormal"))){
+    par.location = 0
+    par.scale = 1
+    par.shape.set = 0
+  }
+ 
+  if(any(dist == c("Gamma", "Weibull"))){
+    par.location = 0
+    par.scale = 1
+    par.shape.set = c(0.5,1,3,10)
+  } 
 
+for(par.shape in par.shape.set){
 for(n in n.set){
-  for(tau in tau.set[1:4]){
-    for(std in std.set[1:4]){
+  for(tau in tau.set){
+    for(std in std.set){
       for(score.type in score.type.set){
         if(any(score.type == c("Mood","FAB","NPL","Klotz"))){
           alignement.set = "unadjusted"
@@ -88,10 +92,10 @@ for(n in n.set){
           alignement.set = c("unadjusted", "overallmean", "overallmedian")
         }
         for(alignement in alignement.set){
-          if((alignement == "unadjusted") | (score.type == "TG")){
+          if((alignement == "unadjusted") & (score.type == "TG")){
             absolute.set = F
           }
-          if(any(alignement == c("overallmean", "overallmedian") | score.type == "TG")){
+          if(any(alignement == c("overallmean", "overallmedian") & score.type == "TG")){
             absolute.set = T
           }
           for(absolute in absolute.set){
@@ -109,11 +113,12 @@ for(n in n.set){
               DB.std[i] = paste(std, collapse =" ")
               DB.mu[i] = mu
               DB.dist[i] = dist
+              DB.par.shape[i] = par.shape
               DB.r[i] = r
               DB.method.test[i] = method.test
               DB.alpha[i] = alpha
               DB.power[i] = Power.test (score.type = score.type, alignement = alignement, absolute= absolute, n = n, 
-                          tau = tau[[1]], beta = beta, std = std[[1]], mu = mu, dist = dist, r = r, method.test = method.test, alpha = alpha)
+                                        tau = tau, beta = beta, std = std, mu = mu, dist = dist, r = r, method.test = method.test, alpha = alpha, par.shape = par.shape)
               
             }
           }
@@ -122,14 +127,10 @@ for(n in n.set){
     }
   }
 }
+}
 
-Results = data.frame(DB.score.type, DB.alignement, DB.absolute,DB.n, DB.tau, DB.beta, DB.std, DB.mu, DB.dist, DB.r, DB.method.test, DB.alpha, DB.power)
-
-
-
-
-
-
+}
+Results = data.frame(DB.score.type, DB.alignement, DB.absolute,DB.n, DB.tau, DB.beta, DB.std, DB.mu, DB.dist, DB.par.shape, DB.r, DB.method.test, DB.alpha, DB.power)
 
 
 
