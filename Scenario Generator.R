@@ -4,8 +4,8 @@
 # Author: Pamela Torres Nuñez
 #         MSM
 #
-# Date: Sep 18, 2018
-# Versión: 1.1
+# Date: Oct 16, 2018
+# Versión: 1.2
 #
 # DESCRIPTION: 
 # 
@@ -31,30 +31,28 @@
 # par.scale: scale parameter defined by the user usually is 1
 # par.shape: shape parameter defined by the user usually is 0
 
-
-
 scenario.generator <- function(n, tau, beta, std, mu, dist, par.location = 0, par.scale = 1, par.shape = 1){
   a= length(tau)
   b= length(beta)
   N= a * b * n # total number of rows
-  r= rep(b*a, n)
-  R= rep(1:n, r)
-  an<- rep(b,a)
-  A= rep(1:a, an) #create rep
-  A= rep(A, n)  #realiza las reps n veces
-  A= factor(A) #factor del modelo
-  bn = rep(a, b)
-  B= rep(1:b, n)
-  B= rep(B, a)
-  B= factor(B)
-  M= rep (mu, N )
-  Tt= rep(tau, an)
-  Tt= rep(Tt, n)
-  Bet= rep(beta, n)
-  Bet= rep(Bet, a)
-  s = rep(std,an)
-  S = rep (s, n)
-  E = getDist(n= N, dist= dist, mu= 0, stdev= S , par.location = par.location, par.scale= par.scale, par.shape= par.shape)#
+  r= rep(b*a, n) #number of elements in each replicate
+  R= rep(1:n, r) #label that defines replicates of each element
+  an=  rep(b, a) #number of elements per treatment within a replicate
+  A= rep(1:a, an) #treatment labels within a replicate
+  A= rep(A, n)  #treatment labels for all replicates
+  A= factor(A) #Factor A is created
+  #bn = rep(a, b) #number of treatments per block within a replicate
+  B= rep(1:b, a) #block labels per replicate
+  B= rep(B, n) #block labels for all replicates
+  B= factor(B) #Factor B is created
+  M= rep (mu, N ) #Overall mean
+  Tt= rep(tau, an) #tau values within a replicate
+  Tt= rep(Tt, n) #tau values for all replicates
+  Bet= rep(beta, a) #bet values within a replicate
+  Bet= rep(Bet, n) #bet values for all replicates
+  s = rep(std,an) #std values within a replicate 
+  S = rep (s, n) #std values for all replicates
+  E = getDist(n= N, dist= dist, mu= 0, stdev= S , par.location = par.location, par.scale= par.scale, par.shape= par.shape)
   observations= M + Tt + Bet + E
   scenario = data.frame(R, A, B, M, Tt, Bet, S, E, observations)
   return(scenario)
